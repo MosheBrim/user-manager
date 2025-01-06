@@ -68,7 +68,6 @@ const Login = () => {
             label="Username"
             variant="outlined"
             fullWidth
-            required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoComplete="username"
@@ -78,7 +77,6 @@ const Login = () => {
             type="password"
             variant="outlined"
             fullWidth
-            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"

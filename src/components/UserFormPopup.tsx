@@ -7,6 +7,7 @@ import {
   Paper,
   CircularProgress,
   Modal,
+  Alert,
 } from "@mui/material";
 import { IUser } from "../interfaces/userInterface";
 
@@ -14,6 +15,7 @@ interface IUserFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: IUser) => void;
+  error: string | null;
   user?: IUser;
   isEditMode?: boolean;
   isLoading?: boolean;
@@ -23,6 +25,7 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  error,
   user,
   isEditMode = false,
   isLoading = false,
@@ -84,7 +87,6 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
             name="username"
             variant="outlined"
             fullWidth
-            required
             value={formData.username}
             onChange={handleChange}
             autoComplete="username"
@@ -94,7 +96,6 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
             name="fullName"
             variant="outlined"
             fullWidth
-            required
             value={formData.fullName}
             onChange={handleChange}
           />
@@ -103,22 +104,23 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
             name="email"
             variant="outlined"
             fullWidth
-            required
             value={formData.email}
             onChange={handleChange}
           />
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            required
-            value={formData.password}
-            onChange={handleChange}
-            autoComplete="current-password"
-          />
+          {!isEditMode && (
+            <TextField
+              label="Password"
+              name="password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="current-password"
+            />
+          )}
 
+          {error && <Alert severity="error">{error}</Alert>}
           <Box
             sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}
           >

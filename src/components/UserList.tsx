@@ -27,6 +27,7 @@ const UserList = () => {
     isLoadingUpdate,
     isLoadingDelete,
     error,
+    addEditError,
     isAddUserOpen,
     isUpdateUserOpen,
     selectedUser,
@@ -84,7 +85,6 @@ const UserList = () => {
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: "secondary.main" }}>
-              <TableCell align="center">ID</TableCell>
               <TableCell align="center">Username</TableCell>
               <TableCell align="center">Full Name</TableCell>
               <TableCell align="center">Email</TableCell>
@@ -102,7 +102,6 @@ const UserList = () => {
                   borderBottom: "1.5px solid #D6D6D6",
                 }}
               >
-                <TableCell align="center">{user._id}</TableCell>
                 <TableCell align="center">{user.username}</TableCell>
                 <TableCell align="center">{user.fullName}</TableCell>
                 <TableCell align="center">{user.email}</TableCell>
@@ -137,6 +136,7 @@ const UserList = () => {
           isOpen={isAddUserOpen}
           onClose={toggleAddUserPopup}
           onSubmit={handleAddUser}
+          error={addEditError}
         />
       )}
       {isUpdateUserOpen && selectedUser && (
@@ -144,6 +144,7 @@ const UserList = () => {
           isOpen={isUpdateUserOpen}
           onClose={toggleUpdateUserPopup}
           onSubmit={(data) => handleUpdateUser(selectedUser._id!, data)}
+          error={addEditError}
           user={selectedUser}
           isEditMode
           isLoading={isLoadingUpdate}
