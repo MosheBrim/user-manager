@@ -69,7 +69,7 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
           boxSizing: "border-box",
         }}
       >
-        <Typography variant="h5" component="h2" gutterBottom>
+        <Typography variant="h5" component="h2" gutterBottom textAlign={"center"}>
           {isEditMode ? "Edit User" : "Add User"}
         </Typography>
         <Box
