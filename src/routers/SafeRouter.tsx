@@ -29,30 +29,24 @@ const SafeRouter: React.FC<SafeRouterProps> = ({ children }) => {
         return;
       }
 
-      try {
-        const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
-        const userResponse = await fetchUserById(decoded.id);
+      const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
+      const userResponse = await fetchUserById(decoded.id);
 
-        if (userResponse.error) {
-          setError(userResponse.error);
-        } else {
-          dispatch(
-            setAdmin({
-              _id: userResponse.data?._id,
-              username: userResponse.data?.username,
-              fullName: userResponse.data?.fullName,
-              email: userResponse.data?.email,
-              authToken: token,
-            })
-          );
-        }
-      } catch (err: any) {
-        setError("Failed to fetch user data.");
-      } finally {
-        setIsLoading(false);
+      if (userResponse.error) {
+        setError(userResponse.error);
+      } else {
+        dispatch(
+          setAdmin({
+            _id: userResponse.data?._id,
+            username: userResponse.data?.username,
+            fullName: userResponse.data?.fullName,
+            email: userResponse.data?.email,
+            authToken: token,
+          })
+        );
       }
+      setIsLoading(false);
     };
-
     fetchUserData();
   }, [token, dispatch]);
 

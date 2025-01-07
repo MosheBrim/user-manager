@@ -29,27 +29,18 @@ export const useLogin = (): UseLoginReturn => {
       return;
     }
 
-    try {
-      const response = await loginService({ username, password });
+    const response = await loginService({ username, password });
 
-      if (response.error) {
-        setError(response.error);
-        return;
-      }
-
-      if (response.data?.token) {
-        localStorage.setItem("authToken", response.data.token);
-        navigate(`/`);
-
-
-      } else {
-        setError("Unexpected error occurred. Please try again.");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (response.error) {
+      setError(response.error);
+      return;
     }
+
+    if (response.data?.token) {
+      localStorage.setItem("authToken", response.data.token);
+      navigate(`/`);
+    }
+    setIsLoading(false);
   };
 
   return {

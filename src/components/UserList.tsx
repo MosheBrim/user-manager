@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -17,7 +18,6 @@ import { useUserList } from "../hooks/useUserList";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
 import UserFormPopup from "./UserFormPopup";
-import { useState } from "react";
 
 const UserList = () => {
   const {
@@ -137,6 +137,7 @@ const UserList = () => {
           onClose={toggleAddUserPopup}
           onSubmit={handleAddUser}
           error={addEditError}
+          isLoading={isLoadingAdd}
         />
       )}
       {isUpdateUserOpen && selectedUser && (
