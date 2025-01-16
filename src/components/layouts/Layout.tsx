@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
-import { useLayout } from "../hooks/useLayout";
+import { useLayout } from "../../hooks/useLayout";
 
 const Layout = () => {
   const { username, handleLogout } = useLayout();

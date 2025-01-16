@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import SafeRouter from "./SafeRouter";
-import Login from "../components/Login";
-import Layout from "../components/Layout";
-import UserList from "../components/UserList";
-import NotFound from "../components/NotFound";
-import ErrorElement from "../components/ErrorElement";
+import Login from "../components/pages/Login";
+import Layout from "../components/layouts/Layout";
+import UserList from "../components/pages/UserList";
+import NotFound from "../components/pages/NotFound";
+import ErrorElement from "../components/pages/ErrorElement";
 
 const router = createBrowserRouter([
   {

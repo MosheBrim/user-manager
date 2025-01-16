@@ -9,8 +9,8 @@ import {
   Modal,
   Alert,
 } from "@mui/material";
-import { useUserForm } from "../hooks/useUserForm";
-import { IUser } from "../interfaces/userInterface";
+import { useUserForm } from "../../hooks/useUserForm";
+import { IUser } from "../../interfaces/userInterface";
 
 interface IUserFormProps {
   isOpen: boolean;

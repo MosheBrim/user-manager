@@ -7,10 +7,10 @@ import {
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
-import { useUserList } from "../hooks/useUserList";
-import ErrorMessage from "./ErrorMessage";
-import UserFormPopup from "./UserFormPopup";
-import { IUser } from "../interfaces/userInterface";
+import { useUserList } from "../../hooks/useUserList";
+import ErrorMessage from "../shared/ErrorMessage";
+import UserFormPopup from "../popups/UserFormPopup";
+import { IUser } from "../../interfaces/userInterface";
 
 const UserList = () => {
   const {

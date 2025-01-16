@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-import AlertSnackbar from "../components/Alert";
-import ConfirmAlert from "../components/ConfirmAlert";
+import AlertSnackbar from "../components/shared/Alert";
+import ConfirmAlert from "../components/shared/ConfirmAlert";
 
 const ALERT_ELEMENT_ID = "global-alert";
 const CONFIRM_ELEMENT_ID = "global-confirm";

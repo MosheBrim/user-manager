@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { AppDispatch } from "../redux/store";
 import { setAdmin } from "../redux/adminSlice";
 import { fetchUserById } from "../services/userService";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/shared/LoadingSpinner";
 
 interface SafeRouterProps {
   children: React.ReactNode;
