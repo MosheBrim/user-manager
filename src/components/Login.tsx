@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   TextField,
@@ -12,20 +11,7 @@ import {
 import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    isLoading,
-    error,
-    handleLogin,
-  } = useLogin();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin();
-  };
+  const { fields, handleChange, handleSubmit, isLoading, error } = useLogin();
 
   return (
     <Container
@@ -64,23 +50,21 @@ const Login = () => {
           onSubmit={handleSubmit}
           sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 2 }}
         >
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoComplete="username"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
+          {Object.keys(fields).map((fieldName) => (
+            <TextField
+              key={fieldName}
+              label={fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+              name={fieldName}
+              variant="outlined"
+              fullWidth
+              value={fields[fieldName].value}
+              onChange={handleChange}
+              error={!!fields[fieldName].error}
+              helperText={fields[fieldName].helperText}
+              type={fieldName === "password" ? "password" : "text"}
+              autoComplete={fieldName}
+            />
+          ))}
           {error && <Alert severity="error">{error}</Alert>}
           <Button
             type="submit"

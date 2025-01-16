@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AdminState } from "../interfaces/userInterface";
 
 const initialState: AdminState = {
-    _id: "",
+  _id: "",
   username: "",
   fullName: "",
   email: "",

@@ -1,23 +1,16 @@
-import { useState } from "react";
 import {
   Box,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
   Button,
+  IconButton,
   CircularProgress,
 } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Edit, Delete } from "@mui/icons-material";
 import { useUserList } from "../hooks/useUserList";
-import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "./ErrorMessage";
 import UserFormPopup from "./UserFormPopup";
+import { IUser } from "../interfaces/userInterface";
 
 const UserList = () => {
   const {
@@ -38,21 +31,71 @@ const UserList = () => {
     handleDeleteUser,
   } = useUserList();
 
-  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
-
-  if (isLoadingUsers) {
-    return <LoadingSpinner />;
-  }
-
   if (error) {
     return <ErrorMessage message={error} />;
   }
 
-  const handleDeleteClick = async (userId: string) => {
-    setDeletingUserId(userId);
-    await handleDeleteUser(userId);
-    setDeletingUserId(null);
-  };
+  const columns: GridColDef[] = [
+    {
+      field: "username",
+      headerName: "Username",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "fullName",
+      headerName: "Full Name",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1.5,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <Box>
+          <IconButton
+            onClick={() => toggleUpdateUserPopup(params.row)}
+            color="primary"
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDeleteUser(params.row._id)}
+            color="primary"
+          >
+            {isLoadingDelete[params.row._id] ? (
+              <CircularProgress size={24} />
+            ) : (
+              <Delete />
+            )}
+          </IconButton>
+        </Box>
+      ),
+    },
+  ];
+
+  const rows = users.map((user: IUser) => ({
+    id: user._id,
+    _id: user._id,
+    username: user.username,
+    fullName: user.fullName,
+    email: user.email,
+    password: user.password,
+  }));
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -61,7 +104,7 @@ const UserList = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: 2,
+          marginBottom: 3,
         }}
       >
         <Typography variant="h4" component="h1" color="text.primary">
@@ -73,63 +116,25 @@ const UserList = () => {
           onClick={toggleAddUserPopup}
           disabled={isLoadingAdd}
         >
-          {isLoadingAdd ? (
-            <CircularProgress size={24} sx={{ color: "white" }} />
-          ) : (
-            "Add User"
-          )}
+          Add User
         </Button>
       </Box>
 
-      <TableContainer component={Paper} sx={{ borderRadius: 1, boxShadow: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "secondary.main" }}>
-              <TableCell align="center">Username</TableCell>
-              <TableCell align="center">Full Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user: any) => (
-              <TableRow
-                key={user._id}
-                sx={{
-                  backgroundColor: "background.default",
-                  "&:hover": { backgroundColor: "secondary.main" },
-                  marginBottom: 2,
-                  borderBottom: "1.5px solid #D6D6D6",
-                }}
-              >
-                <TableCell align="center">{user.username}</TableCell>
-                <TableCell align="center">{user.fullName}</TableCell>
-                <TableCell align="center">{user.email}</TableCell>
-                <TableCell align="center">
-                  <IconButton
-                    onClick={() => toggleUpdateUserPopup(user)}
-                    disabled={isLoadingUpdate}
-                    color="primary"
-                  >
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => handleDeleteClick(user._id)}
-                    disabled={isLoadingDelete}
-                    color="primary"
-                  >
-                    {deletingUserId === user._id ? (
-                      <CircularProgress size={24} />
-                    ) : (
-                      <Delete />
-                    )}
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box sx={{ width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          loading={isLoadingUsers}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 50, 100]}
+          disableRowSelectionOnClick
+          sx={{ maxHeight: "66vh" }}
+        />
+      </Box>
 
       {isAddUserOpen && (
         <UserFormPopup

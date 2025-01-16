@@ -2,37 +2,68 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/loginService";
 
+interface IFieldState {
+  value: string;
+  error: string | null;
+  helperText: string | null;
+}
+
 interface UseLoginReturn {
-  username: string;
-  setUsername: (value: string) => void;
-  password: string;
-  setPassword: (value: string) => void;
+  fields: { [key: string]: IFieldState };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
   error: string | null;
-  handleLogin: () => Promise<void>;
 }
 
 export const useLogin = (): UseLoginReturn => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [fields, setFields] = useState<{ [key: string]: IFieldState }>({
+    username: { value: "", error: null, helperText: null },
+    password: { value: "", error: null, helperText: null },
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFields((prev) => ({
+      ...prev,
+      [name]: { ...prev[name], value, error: null, helperText: null },
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     setError(null);
 
-    if (!username.trim() || !password.trim()) {
-      setError("Username and password are required.");
+    let isValid = true;
+    const updatedFields = { ...fields };
+
+    for (const key in updatedFields) {
+      if (updatedFields[key].value.trim() === "") {
+        updatedFields[key].error = `${key} is required`;
+        updatedFields[key].helperText = `Please enter a ${key}`;
+        isValid = false;
+      }
+    }
+
+    setFields(updatedFields);
+
+    if (!isValid) {
       setIsLoading(false);
       return;
     }
 
-    const response = await loginService({ username, password });
+    const response = await loginService({
+      username: fields.username.value,
+      password: fields.password.value,
+    });
 
     if (response.error) {
       setError(response.error);
+      setIsLoading(false);
       return;
     }
 
@@ -40,16 +71,15 @@ export const useLogin = (): UseLoginReturn => {
       localStorage.setItem("authToken", response.data.token);
       navigate(`/`);
     }
+
     setIsLoading(false);
   };
 
   return {
-    username,
-    setUsername,
-    password,
-    setPassword,
+    fields,
     isLoading,
     error,
-    handleLogin,
+    handleChange,
+    handleSubmit,
   };
 };

@@ -4,6 +4,7 @@ import Login from "../components/Login";
 import Layout from "../components/Layout";
 import UserList from "../components/UserList";
 import NotFound from "../components/NotFound";
+import ErrorElement from "../components/ErrorElement";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
         <Layout />
       </SafeRouter>
     ),
-    errorElement: <NotFound />,
+    errorElement: <ErrorElement />,
     children: [
       {
         path: "/",
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default router;

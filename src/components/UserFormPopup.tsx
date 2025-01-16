@@ -26,12 +26,12 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  error,
   user,
+  error,
   isEditMode = false,
   isLoading = false,
 }) => {
-  const { formData, handleChange, handleSubmit } = useUserForm({
+  const { fields, handleChange, handleSubmit } = useUserForm({
     user,
     onSubmit,
   });
@@ -47,7 +47,7 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
         elevation={3}
         sx={{
           width: "90%",
-          maxWidth: 340,
+          maxWidth: 380,
           padding: 4,
           borderRadius: 2,
           position: "absolute",
@@ -76,47 +76,33 @@ const UserFormPopup: React.FC<IUserFormProps> = ({
             mt: 2,
           }}
         >
-          <TextField
-            label="Username"
-            name="username"
-            variant="outlined"
-            fullWidth
-            value={formData.username}
-            onChange={handleChange}
-            autoComplete="username"
-          />
-          <TextField
-            label="Full Name"
-            name="fullName"
-            variant="outlined"
-            fullWidth
-            value={formData.fullName}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Email"
-            name="email"
-            variant="outlined"
-            fullWidth
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {!isEditMode && (
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              value={formData.password}
-              onChange={handleChange}
-              autoComplete="current-password"
-            />
-          )}
+          {Object.keys(fields)
+            .filter((fieldName) => !(isEditMode && fieldName === "password"))
+            .map((fieldName) => (
+              <TextField
+                key={fieldName}
+                label={fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+                name={fieldName}
+                variant="outlined"
+                fullWidth
+                value={fields[fieldName].value}
+                onChange={handleChange}
+                error={!!fields[fieldName].error}
+                helperText={fields[fieldName].helperText}
+                type={fieldName === "password" ? "password" : "text"}
+                autoComplete={fieldName}
+              />
+            ))}
 
           {error && <Alert severity="error">{error}</Alert>}
+
           <Box
-            sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}
+            sx={{
+              marginTop: "18px",
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
           >
             <Button
               type="button"

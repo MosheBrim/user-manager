@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../redux/store";
-import { clearAdmin } from "../redux/adminSlice";
+import { RootState, AppDispatch, resetStore } from "../redux/store";
 
 export const useLayout = () => {
   const navigate = useNavigate();
@@ -10,7 +9,7 @@ export const useLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    dispatch(clearAdmin());
+    dispatch(resetStore());
     navigate("/login");
   };
 

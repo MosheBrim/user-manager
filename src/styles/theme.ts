@@ -33,6 +33,27 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          "&::-webkit-scrollbar": {
+            width: "8px",
+            height: "8px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#8D6E63",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "#6F4C42",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "#D6D2CF",
+            borderRadius: "4px",
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         containedSecondary: {
