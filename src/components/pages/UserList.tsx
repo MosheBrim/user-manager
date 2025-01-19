@@ -58,6 +58,13 @@ const UserList = () => {
       headerAlign: "center",
     },
     {
+      field: "createdAt",
+      headerName: "Creation Date",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
       field: "actions",
       headerName: "Actions",
       flex: 1,
@@ -94,6 +101,7 @@ const UserList = () => {
     username: user.username,
     fullName: user.fullName,
     email: user.email,
+    createdAt: new Date(user.createdAt!).toLocaleString(),
     password: user.password,
   }));
 
