@@ -66,4 +66,3 @@ A simple and efficient user management system built with React, Redux, and MUI.
 
 ---
 Thank you for using the User Management System! Feel free to reach out with any questions or suggestions.
-```
